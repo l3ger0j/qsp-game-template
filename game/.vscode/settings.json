@@ -1,0 +1,15 @@
+{
+  // Save by itself a second after typing stops, so F5 never runs an old version.
+  "files.autoSave": "afterDelay",
+  "editor.wordWrap": "on",
+  // The editor keeps earlier versions of each file (Explorer → Timeline).
+  "workbench.localHistory.enabled": true,
+  "workbench.localHistory.maxFileEntries": 100,
+  "qsp.project.enabled": true,
+  // A password on every export confuses more than it protects while writing.
+  "qsp.game.promptPassword": false,
+  "files.exclude": {
+    ".vscode": true,
+    ".qsp": true
+  }
+}

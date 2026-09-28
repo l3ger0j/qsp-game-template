@@ -1,0 +1,40 @@
+! This is a starter game. Change it as you like, or erase all of it.
+! Lines that start with an exclamation mark are comments: the player
+! never sees them. Press F5 to play.
+!
+! A game is made of locations. A location starts with a "# name" line
+! and ends with a "---" line. The game starts at the first location.
+
+# Hallway
+*pl 'You stand in a dark hallway. It smells of dust and old books.'
+*pl 'Light shows under the door on the right.'
+act 'Open the door': gt 'Study'
+act 'Look around': gt 'Hallway, looking around'
+---
+
+# Hallway, looking around
+*pl 'A coat hangs on a hook. Something jingles in its pocket.'
+if key_found = 0:
+	act 'Check the pocket':
+		key_found = 1
+		addobj 'Key'
+		*pl 'You find a small brass key.'
+	end
+end
+act 'Go back': gt 'Hallway'
+---
+
+# Study
+*pl 'Lamplight fills the study. A locked box sits on the desk.'
+if obj 'Key':
+	act 'Open the box with the key': gt 'The end'
+else
+	*pl 'The box won''t open without a key.'
+end
+act 'Go back to the hallway': gt 'Hallway'
+---
+
+# The end
+*pl 'The key turns with a soft click. Inside the box is a letter.'
+*pl 'What it says is up to you: this is where your game begins.'
+---

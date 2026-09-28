@@ -1,0 +1,17 @@
+{
+  // Terminal → Run Task… → "Open in qSpider": the last built game.qsp
+  // (press F5 first) in qSpider, the player with full HTML support.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Open in qSpider",
+      "type": "process",
+      "command": "${workspaceFolder}/../tools/qspider/AppRun",
+      "windows": { "command": "${workspaceFolder}\\..\\tools\\qspider\\qSpider.exe" },
+      "osx": { "command": "${workspaceFolder}/../tools/qspider/qSpider.app/Contents/MacOS/qSpider" },
+      "args": ["--file", "${workspaceFolder}/game.qsp"],
+      "presentation": { "reveal": "never" },
+      "problemMatcher": []
+    }
+  ]
+}

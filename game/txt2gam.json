@@ -1,0 +1,10 @@
+{
+  "outputFile": "game.qsp",
+  "files": ["**/*.qsps"],
+  "mainFile": "^main\\.qsps$",
+  "playerExecutable": {
+    "win32": "../tools/qspgui/bin/qspgui.exe",
+    "darwin": "../tools/qspgui/qspgui.app/Contents/MacOS/qspgui",
+    "linux": "../tools/qspgui/AppRun"
+  }
+}
