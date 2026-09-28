@@ -195,7 +195,7 @@ if ! installed qspgui "$QSPGUI_VERSION"; then
   image="$(download "$QSPGUI_URL" "$QSPGUI_SHA256")"
   if [ "$OS" = mac ]; then
     mnt="$(mktemp -d)"
-    hdiutil attach -nobrowse -readonly -mountpoint "$mnt" "$image" >/dev/null
+    PAGER=cat hdiutil attach -nobrowse -readonly -noautoopen -mountpoint "$mnt" "$image" < <(yes) >/dev/null
     app="$(find "$mnt" -maxdepth 2 -name '*.app' -print -quit)"
     rm -rf "$TOOLS/qspgui"
     mkdir -p "$TOOLS/qspgui"
