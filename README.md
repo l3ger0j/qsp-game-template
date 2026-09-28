@@ -68,6 +68,16 @@ Each **F5** builds the file `game/game.qsp`. That is the game itself. Give playe
 
 qSpider is a second player, which shows HTML the way a web browser does. It is also installed. Press **F5** first, then choose the menu **Terminal** → **Run Task…** → **Open in qSpider**. *(Not tested yet.)* In qSpider the names of pictures and sounds must match in capital and small letters: `Image.jpg` and `image.jpg` are different files.
 
+## Working with an AI assistant
+
+An AI assistant such as Claude or Cursor can help you with the game. The QSP extension gives it the same knowledge of the game that the editor has: the list of locations, where each one is used, and the mistakes it found. This works through MCP, a common way to connect programs to AI assistants.
+
+1. Open your game (step 4).
+2. Press **Ctrl+Shift+P** (**Cmd+Shift+P** on macOS), type `Copy MCP Server Config` and press **Enter**. The editor copies a piece of settings text.
+3. Paste it into the assistant's MCP settings. The assistant's own help says where they are.
+
+Copy the settings again after each update (step 3 again): they contain the extension's version. The assistant reads the text of your game, so keep that in mind if the game is private. *(Checked: the server answers questions about the starter game. Connecting a particular assistant is not tested yet.)*
+
 ## What is in this folder
 
 | Folder or file | What it is |
@@ -87,7 +97,7 @@ Run the setup file again (step 3). It updates the editor, the extension and the 
 - **F5 says it can't start the player.** Run the setup again: it puts back what is missing.
 - **On Linux the player doesn't open.** It needs a desktop with the GTK 3 library, which Ubuntu, Linux Mint and Fedora have.
 - **After you moved the folder, the editor looks new** (macOS, some Linux systems). There the editor keeps its settings outside the folder, tied to the folder's place. Your game has not changed.
-- **You have an old game file (`.qsp`).** Press **Ctrl+Shift+P**, type `Import QSP Game`, press **Enter** and pick the file: the editor turns it back into text. Games written for QSP 5.7 may need changes for today's players; see [Aleks Versus's notes](https://aleksversus.github.io/howdo_faq/docs/articles/transition_570_590) (in Russian).
+- **You have an old game file (`.qsp`).** Press **Ctrl+Shift+P** (**Cmd+Shift+P** on macOS), type `Import QSP Game`, press **Enter** and pick the file: the editor turns it back into text. Games written for QSP 5.7 may need changes for today's players; see [Aleks Versus's notes](https://aleksversus.github.io/howdo_faq/docs/articles/transition_570_590) (in Russian).
 
 ## Learning QSP
 
