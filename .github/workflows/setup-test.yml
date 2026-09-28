@@ -1,0 +1,61 @@
+# The installers on every system, in both languages: the extensions end up
+# in the editor, the player txt2gam.json names exists, and a second run
+# keeps the author's settings and game.
+name: Setup test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        lang: [en, ru]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: bash setup/setup.sh --lang ${{ matrix.lang }} --yes
+      - name: Check
+        run: |
+          ROOT="$PWD"; . setup/paths.sh
+          node .github/scripts/check-install.mjs ${{ matrix.lang }} "$EXTENSIONS_DIR" "$USER_DATA_DIR" "$EDITOR_CLI"
+          test -f game/main.qsps
+      - name: A second run keeps the author's settings and game
+        run: |
+          ROOT="$PWD"; . setup/paths.sh
+          echo '{ "editor.fontSize": 19 }' > "$USER_DATA_DIR/User/settings.json"
+          echo '! edited' >> game/main.qsps
+          bash setup/setup.sh --yes
+          grep -q '"editor.fontSize": 19' "$USER_DATA_DIR/User/settings.json"
+          tail -1 game/main.qsps | grep -q '! edited'
+
+  windows:
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [en, ru]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        shell: powershell
+        run: .\setup\setup.ps1 -Lang ${{ matrix.lang }} -Yes
+      - name: Check
+        shell: powershell
+        run: |
+          node .github/scripts/check-install.mjs ${{ matrix.lang }} tools\vscodium\data\extensions tools\vscodium\data\user-data tools\vscodium\bin\codium.cmd
+          if (-not (Test-Path game\main.qsps)) { throw 'no starter game' }
+          if (-not (Test-Path tools\qspider\qSpider.exe)) { throw 'no qSpider' }
+      - name: A second run keeps the author's settings and game
+        shell: powershell
+        run: |
+          Set-Content tools\vscodium\data\user-data\User\settings.json '{ "editor.fontSize": 19 }'
+          Add-Content game\main.qsps '! edited'
+          .\setup\setup.ps1 -Yes
+          if (-not (Select-String -Quiet '"editor.fontSize": 19' tools\vscodium\data\user-data\User\settings.json)) { throw 'settings overwritten' }
+          if ((Get-Content game\main.qsps -Tail 1) -ne '! edited') { throw 'game overwritten' }

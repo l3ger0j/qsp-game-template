@@ -16,8 +16,6 @@
 set -Eeuo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# Launched from another VS Code's terminal, these would make the editor's CLI
-# install extensions through that other editor.
 unset ELECTRON_RUN_AS_NODE
 for v in $(env | sed -n 's/^\(VSCODE_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$v"; done
 TOOLS="$ROOT/tools"
@@ -39,7 +37,6 @@ while [ $# -gt 0 ]; do
 done
 
 mkdir -p "$DOWNLOADS"
-# Everything printed also goes to the log the README points to.
 exec > >(tee -a "$LOG") 2>&1
 echo "── $(date '+%Y-%m-%d %H:%M:%S') ──"
 
@@ -70,8 +67,6 @@ pause_if_interactive() {
   fi
 }
 
-# To stderr: fail may run inside $(download …), whose stdout is captured.
-# The pause waits for the top level, so the window shows one message.
 fail() {
   {
     echo
@@ -82,7 +77,6 @@ fail() {
   if [ "$BASH_SUBSHELL" -eq 0 ]; then pause_if_interactive; fi
   exit 1
 }
-# A failure fail() already explained (in a subshell) needs no second message.
 on_error() {
   if [ -f "$TOOLS/.failed" ]; then pause_if_interactive; exit 1; fi
   fail "ошибка в строке $1." "error at line $1."
@@ -119,7 +113,6 @@ sha256_of() {
   if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | cut -d' ' -f1; else shasum -a 256 "$1" | cut -d' ' -f1; fi
 }
 
-# download URL SHA256: the file's path in tools/downloads (reused when already there and intact).
 download() {
   local url="$1" sum="$2" file
   file="$DOWNLOADS/$(basename "$url")"
@@ -139,11 +132,8 @@ download() {
   echo "$file"
 }
 
-# installed NAME VERSION: whether tools/NAME already holds this version.
 installed() { [ -f "$TOOLS/$1/.version" ] && [ "$(cat "$TOOLS/$1/.version")" = "$2" ]; }
 
-# Unpack an AppImage into DIR without mounting it: newer distributions lack
-# the FUSE library that running an AppImage directly needs.
 extract_appimage() {
   local image="$1" dir="$2" tmp
   tmp="$(mktemp -d)"
@@ -160,14 +150,11 @@ t "1/5. Редактор VSCodium $VSCODIUM_VERSION" "1/5. VSCodium editor $VSCO
 # shellcheck source=paths.sh
 . "$ROOT/setup/paths.sh"
 if [ "$OS" = linux ]; then
-  # Under WSL the CLI otherwise stops to ask whether to go on with a Linux editor.
   export DONT_PROMPT_WSL_INSTALL=1
 fi
-# The editor's CLI prints Node deprecation warnings that only alarm authors.
 export NODE_NO_WARNINGS=1
 if ! installed vscodium "$VSCODIUM_VERSION"; then
   archive="$(download "$VSCODIUM_URL" "$VSCODIUM_SHA256")"
-  # Extensions and the profile (when it lives in tools/) survive an update of the editor.
   kept="$(mktemp -d)"
   for d in extensions profile; do if [ -d "$EDITOR_DIR/$d" ]; then mv "$EDITOR_DIR/$d" "$kept/$d"; fi; done
   rm -rf "$EDITOR_DIR"
@@ -186,7 +173,6 @@ mkdir -p "$USER_DATA_DIR/User" "$EXTENSIONS_DIR"
 
 # ── Editor settings ─────────────────────────────────────────────────
 t "2/5. Настройки редактора" "2/5. Editor settings"
-# Only the first time: after that they are the author's.
 [ -f "$USER_DATA_DIR/User/settings.json" ] || cp "$ROOT/setup/user-settings.json" "$USER_DATA_DIR/User/settings.json"
 
 # ── Extensions ──────────────────────────────────────────────────────
@@ -246,7 +232,6 @@ if ! ls "$ROOT/game"/*.qsps >/dev/null 2>&1; then
 fi
 
 trap - ERR
-# The archives are unpacked now; a later run downloads only what changed.
 rm -f "$DOWNLOADS"/*
 echo
 if [ "$OS" = mac ]; then

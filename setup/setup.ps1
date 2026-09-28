@@ -14,12 +14,8 @@ param(
   [string]$QspVsix = ''
 )
 $ErrorActionPreference = 'Stop'
-# Invoke-WebRequest is many times slower while drawing its progress bar.
 $ProgressPreference = 'SilentlyContinue'
-# The editor's CLI prints Node deprecation warnings that only alarm authors.
 $env:NODE_NO_WARNINGS = '1'
-# Run from another VS Code's terminal, these would make the editor's CLI
-# install extensions through that other editor.
 Get-ChildItem env: | Where-Object { $_.Name -eq 'ELECTRON_RUN_AS_NODE' -or $_.Name -like 'VSCODE_*' } |
   ForEach-Object { Remove-Item "env:$($_.Name)" }
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

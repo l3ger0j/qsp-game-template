@@ -1,0 +1,23 @@
+# On a version tag (v1.2.3): the template as qsp-game-template.zip on the
+# release, which the README's download link points at. git archive keeps
+# the scripts' executable bits, which macOS and Linux need to run them.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pack
+        run: git archive --format=zip --prefix=qsp-game/ -o qsp-game-template.zip HEAD -- . ':!.github' ':!.gitattributes'
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: qsp-game-template.zip
+          generate_release_notes: true

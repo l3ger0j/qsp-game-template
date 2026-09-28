@@ -1,6 +1,4 @@
 {
-  // Terminal → Run Task… → "Open in qSpider": the last built game.qsp
-  // (press F5 first) in qSpider, the player with full HTML support.
   "version": "2.0.0",
   "tasks": [
     {

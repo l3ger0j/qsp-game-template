@@ -1,12 +1,5 @@
 {
-  // Settings of the editor in tools/, written once by the installer; after
-  // that they belong to the author and are never overwritten.
-
-  // This editor only opens the author's own game; the "Do you trust this
-  // folder?" question would only get in the way, and "no" turns the QSP
-  // extension off.
   "security.workspace.trust.enabled": false,
-  // Updates come from running the installer again, with tested versions.
   "update.mode": "none",
   "telemetry.telemetryLevel": "off",
   "workbench.startupEditor": "none",

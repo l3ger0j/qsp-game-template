@@ -1,6 +1,4 @@
 {
-  // F5 builds game.qsp and opens it in the QSP player, whichever file is open
-  // (without this, F5 with no .qsps file in front asks which debugger to use).
   "version": "0.2.0",
   "configurations": [
     { "type": "qsp", "request": "launch", "name": "Run QSP Game" }
