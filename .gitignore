@@ -1,0 +1,6 @@
+# Made by the installer; delete it and run the installer again to rebuild it.
+tools/
+# The built game: rebuilt by F5 or Export QSP Game.
+game/*.qsp
+# Crash reports of the editor extension (see its README).
+game/.qsp/
